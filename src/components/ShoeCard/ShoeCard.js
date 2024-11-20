@@ -38,9 +38,9 @@ const ShoeCard = ({
           <ScaleTransform>
             <Image alt="" src={imageSrc} />
           </ScaleTransform>
-            {variant === "on-sale" && <SaleFlag>Sale</SaleFlag>}
-            {variant === "new-release" && <NewFlag>Just released!</NewFlag>}
         </ImageWrapper>
+        {variant === "on-sale" && <SaleFlag>Sale</SaleFlag>}
+        {variant === "new-release" && <NewFlag>Just released!</NewFlag>}
         <Spacer size={12} />
         <Row>
           <Name>{name}</Name>
@@ -66,21 +66,6 @@ const ShoeCard = ({
   );
 };
 
-const Link = styled.a`
-  text-decoration: none;
-  color: inherit;
-`;
-
-const Wrapper = styled.article``;
-
-const Image = styled.img`
-  display: block;
-  width: 100%;
-  transition: transform var(--transition-exit-duration);
-  transform-origin: 50% 75%;
-  will-change: transform;
-`;
-
 const Flag = styled.div`
   position: absolute;
   top: 12px;
@@ -99,21 +84,43 @@ const Flag = styled.div`
   will-change: transform;
 `;
 
-const SaleFlag = styled(Flag)`
-  background-color: var(--color-primary);
-`;
-const NewFlag = styled(Flag)`
-  background-color: var(--color-secondary);
-`;
-
 const ScaleTransform = styled.div`
   transition: transform var(--transition-exit-duration);
   transform-origin: 50% 75%;
   will-change: transform;
 `;
 
-const ImageWrapper = styled.div`
+const Image = styled.img`
+  display: block;
+  width: 100%;
+  transition: transform var(--transition-exit-duration);
+  transform-origin: 50% 75%;
+  will-change: transform;
+`;
+
+const Link = styled.a`
   --transition-exit-duration: 500ms;
+
+  text-decoration: none;
+  color: inherit;
+
+  @keyframes twinkle {
+    0% {
+      transform: translateX(-80%) rotate(45deg) scale(0);
+    }
+    5% {
+      transform: translateX(-80%) rotate(90deg) scale(0.5);
+    }
+    9% {
+      transform: translateX(-80%) rotate(135deg) scale(1);
+    }
+    17% {
+      transform: translateX(-80%) rotate(225deg) scale(0);
+    }
+    100% {
+      transform: translateX(-80%) rotate(45deg) scale(0);
+    }
+  }
 
   @keyframes shake {
     0% {
@@ -130,40 +137,25 @@ const ImageWrapper = styled.div`
     }
   }
 
-  @keyframes twinkle {
-    0% {
-      transform: translateX(-80%) rotate(-45deg) scale(0);
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    &:hover ${ScaleTransform},
+    &:focus ${ScaleTransform}
+    {
+      transform: scale(1.1);
+      transition: transform 200ms;
     }
-    5% {
-      transform: translateX(-80%) rotate(-90deg) scale(0.5);
-    }
-    9% {
-      transform: translateX(-80%) rotate(-135deg) scale(1);
-    }
-    17% {
-      transform: translateX(-80%) rotate(-225deg) scale(0);
-    }
-    100% {
-      transform: translateX(-80%) rotate(-45deg) scale(0);
+
+    &:hover ${Image},
+    &:focus ${Image}
+    {
+      animation: shake 3000ms infinite;
+      animation-delay: 1000ms;
     }
   }
 
-  position: relative;
-  border-radius: 16px 16px 4px 4px;
-
-  overflow: hidden;
-
-  &:hover ${ScaleTransform} {
-    transform: scale(1.1);
-    transition: transform 200ms;
-  }
-
-  &:hover ${Image} {
-    animation: shake 3000ms infinite;
-    animation-delay: 1000ms;
-  }
-
-  &:hover ${Flag} {
+  &:hover ${Flag},
+  &:focus ${Flag} {
+    // Tilts the flag
     transform: rotate(3deg);
     transition: transform 200ms;
 
@@ -193,6 +185,24 @@ const ImageWrapper = styled.div`
       will-change: transform;
     }
   }
+
+
+`;
+
+const Wrapper = styled.article`
+  position: relative;
+`;
+
+const SaleFlag = styled(Flag)`
+  background-color: var(--color-primary);
+`;
+const NewFlag = styled(Flag)`
+  background-color: var(--color-secondary);
+`;
+
+const ImageWrapper = styled.div`
+  border-radius: 16px 16px 4px 4px;
+  overflow: hidden;
 `;
 
 const Row = styled.div`
