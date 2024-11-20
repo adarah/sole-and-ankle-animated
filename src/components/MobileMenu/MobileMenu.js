@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components/macro';
 import { DialogOverlay, DialogContent } from '@reach/dialog';
 
-import { QUERIES, WEIGHTS } from '../../constants';
+import { WEIGHTS } from '../../constants';
 
 import UnstyledButton from '../UnstyledButton';
 import Icon from '../Icon';
@@ -13,23 +13,23 @@ const MobileMenu = ({ isOpen, onDismiss }) => {
   return (
     <Overlay isOpen={isOpen} onDismiss={onDismiss}>
       <Content aria-label="Menu">
-        <CloseButton onClick={onDismiss}>
+        <CloseButton onClick={onDismiss} style={{'--counter': 0}}>
           <Icon id="close" />
           <VisuallyHidden>Dismiss menu</VisuallyHidden>
         </CloseButton>
         <Filler />
         <Nav>
-          <NavLink href="/sale">Sale</NavLink>
-          <NavLink href="/new">New&nbsp;Releases</NavLink>
-          <NavLink href="/men">Men</NavLink>
-          <NavLink href="/women">Women</NavLink>
-          <NavLink href="/kids">Kids</NavLink>
-          <NavLink href="/collections">Collections</NavLink>
+          <NavLink href="/sale" style={{'--counter': 1}}>Sale</NavLink>
+          <NavLink href="/new" style={{'--counter': 2}}>New&nbsp;Releases</NavLink>
+          <NavLink href="/men" style={{'--counter': 3}}>Men</NavLink>
+          <NavLink href="/women" style={{'--counter': 4}}>Women</NavLink>
+          <NavLink href="/kids" style={{'--counter': 4}}>Kids</NavLink>
+          <NavLink href="/collections" style={{'--counter': 6}}>Collections</NavLink>
         </Nav>
         <Footer>
-          <SubLink href="/terms">Terms and Conditions</SubLink>
-          <SubLink href="/privacy">Privacy Policy</SubLink>
-          <SubLink href="/contact">Contact Us</SubLink>
+          <SubLink href="/terms" style={{'--counter': 7}}>Terms and Conditions</SubLink>
+          <SubLink href="/privacy" style={{'--counter': 8}}>Privacy Policy</SubLink>
+          <SubLink href="/contact" style={{'--counter': 9}}>Contact Us</SubLink>
         </Footer>
       </Content>
     </Overlay>
@@ -45,6 +45,9 @@ const Overlay = styled(DialogOverlay)`
       opacity: 1;
     }
   }
+
+  perspective: 800px;
+  transform-style: preserve-3d;
 
   position: fixed;
   top: 0;
@@ -67,6 +70,18 @@ const Content = styled(DialogContent)`
     }
   }
 
+  @keyframes hinge-left {
+    from {
+      transform: rotateY(-180deg);
+      background: var(--color-gray-900);
+    }
+    to {
+      transform: rotateY(0deg);
+    }
+  }
+
+  transform-origin: 100% 50%;
+
   background: white;
   width: 300px;
   height: 100%;
@@ -74,12 +89,15 @@ const Content = styled(DialogContent)`
   display: flex;
   flex-direction: column;
 
-  animation: slide-left 400ms both cubic-bezier(.12,1.03,.75,1.05);
+  @media (prefers-reduced-motion: no-preference) {
+    animation: hinge-left 500ms both cubic-bezier(.12,1.03,.75,1.05);
 
-  & > * {
-    animation: fade-in 300ms both;
-    animation-delay: 300ms;
+    & a, & button {
+      animation: fade-in 300ms both;
+      animation-delay: calc(300ms + 40ms * var(--counter, 0));
+    }
   }
+
 `;
 
 const CloseButton = styled(UnstyledButton)`
