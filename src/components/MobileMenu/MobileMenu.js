@@ -90,12 +90,12 @@ const Content = styled(DialogContent)`
   flex-direction: column;
 
   @media (prefers-reduced-motion: no-preference) {
-    animation: hinge-left 500ms both cubic-bezier(.12,1.03,.75,1.05);
+    animation: hinge-left 600ms both cubic-bezier(.65,.05,.48,1.01);
 
-    & a, & button {
-      animation: fade-in 300ms both;
-      animation-delay: calc(300ms + 40ms * var(--counter, 0));
-    }
+    // & a, & button {
+    //   animation: fade-in 300ms both;
+    //   animation-delay: calc(300ms + 40ms * var(--counter, 0));
+    // }
   }
 
 `;
